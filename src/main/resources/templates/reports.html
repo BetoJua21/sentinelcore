@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes | SentinelCore</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="brand-icon">◆</span> SentinelCore
+        </div>
+
+        <div class="menu-label">MENÚ PRINCIPAL</div>
+
+        <nav>
+            <a class="nav-link" th:href="@{/dashboard}">
+                Dashboard
+            </a>
+
+            <a class="nav-link" th:href="@{/accesses}">
+                Accesos
+            </a>
+
+            <a class="nav-link" th:href="@{/users}">
+                Usuarios
+            </a>
+
+            <a class="nav-link active" th:href="@{/reports}">
+                Reportes
+            </a>
+
+            <a class="nav-link" href="#">
+                Configuración
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="avatar">SC</div>
+            <div>
+                <strong>SentinelCore</strong>
+                <small>Panel de administración</small>
+            </div>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <span class="eyebrow">ANÁLISIS DEL SISTEMA</span>
+                <h1>Reportes</h1>
+                <p class="subtitle">
+                    Consulta estadísticas y exporta registros de acceso.
+                </p>
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>
+                Reportes del sistema
+            </div>
+
+        </header>
+
+        <section class="panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Generar reporte</h2>
+                    <p>Selecciona el periodo que deseas consultar.</p>
+                </div>
+
+                <span class="tag">Historial RFID</span>
+            </div>
+
+            <form
+                    class="access-filters"
+                    method="get"
+                    th:action="@{/reports}"
+            >
+
+                <div class="filter-field">
+                    <label for="startDate">Fecha inicial</label>
+                    <input
+                            type="date"
+                            id="startDate"
+                            name="startDate"
+                            th:value="${startDate}"
+                            required
+                    >
+                </div>
+
+                <div class="filter-field">
+                    <label for="endDate">Fecha final</label>
+                    <input
+                            type="date"
+                            id="endDate"
+                            name="endDate"
+                            th:value="${endDate}"
+                            required
+                    >
+                </div>
+
+                <div class="filter-actions">
+                    <button class="filter-button" type="submit">
+                        Generar reporte
+                    </button>
+                </div>
+
+            </form>
+
+            <p
+                    th:if="${error}"
+                    th:text="${error}"
+                    style="color: #dc2626; margin-top: 16px;"
+            ></p>
+
+        </section>
+
+        <section class="stats" style="margin-top: 22px;">
+
+            <div class="stat-card">
+                <span class="stat-label">Total de accesos</span>
+                <strong th:text="${total}">0</strong>
+                <small>Registros del periodo</small>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Accesos concedidos</span>
+                <strong th:text="${granted}">0</strong>
+                <small>Autorizaciones registradas</small>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Accesos denegados</span>
+                <strong th:text="${denied}">0</strong>
+                <small>Intentos rechazados</small>
+            </div>
+
+        </section>
+
+        <section class="panel table-panel">
+
+            <div class="panel-heading">
+
+                <div>
+                    <h2>Detalle del reporte</h2>
+                    <p>Movimientos registrados durante el periodo.</p>
+                </div>
+
+                <a
+                        class="filter-button"
+                        style="text-decoration: none;"
+                        th:if="${error == null}"
+                        th:href="@{/reports/export(
+                        startDate=${startDate},
+                        endDate=${endDate}
+                    )}"
+                >
+                    Descargar CSV
+                </a>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Fecha y hora (UTC)</th>
+                        <th>RFID</th>
+                        <th>Resultado</th>
+                        <th>Mensaje</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="log : ${logs}">
+
+                        <td th:text="${log.timestamp}">
+                            Fecha
+                        </td>
+
+                        <td th:text="${log.rfidUid}">
+                            RFID
+                        </td>
+
+                        <td>
+                                <span
+                                        class="access-granted"
+                                        th:if="${log.granted}"
+                                >
+                                    Concedido
+                                </span>
+
+                            <span
+                                    class="access-denied"
+                                    th:unless="${log.granted}"
+                            >
+                                    Denegado
+                                </span>
+                        </td>
+
+                        <td th:text="${log.message}">
+                            Mensaje
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(logs)}">
+                        <td colspan="4" class="empty">
+                            No hay registros para este periodo.
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

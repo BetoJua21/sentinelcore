@@ -1,0 +1,679 @@
+
+:root {
+    --navy: #101c32;
+    --navy-light: #1b2b46;
+    --accent: #14b8a6;
+    --background: #f3f6fb;
+    --text: #17243a;
+    --muted: #8490a3;
+    --border: #e6ebf2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: var(--navy);
+    color: white;
+    padding: 30px 18px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 750;
+    padding: 4px 10px 46px;
+    letter-spacing: -0.7px;
+}
+
+.brand-icon,
+.accent {
+    color: var(--accent);
+}
+
+.brand-icon {
+    margin-right: 7px;
+}
+
+.menu-label {
+    font-size: 10px;
+    color: #8190a8;
+    letter-spacing: 1.5px;
+    padding: 0 14px;
+    margin: 12px 0;
+}
+
+.nav-link {
+    display: block;
+    color: #aebbd0;
+    text-decoration: none;
+    padding: 13px 15px;
+    border-radius: 9px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: var(--navy-light);
+    color: white;
+}
+
+.nav-link.active {
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px 8px 0;
+    border-top: 1px solid #304059;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    background: #244b59;
+    color: #5eead4;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.sidebar-footer strong,
+.sidebar-footer small {
+    display: block;
+}
+
+.sidebar-footer strong {
+    font-size: 13px;
+}
+
+.sidebar-footer small {
+    font-size: 11px;
+    color: #92a1b7;
+    margin-top: 4px;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    margin-left: 250px;
+    padding: 36px;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 7px 0;
+    letter-spacing: -0.7px;
+}
+
+.subtitle,
+.panel-heading p {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 6px 0;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    background: white;
+    padding: 11px 16px;
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.stat-card,
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 3px 16px #182b4507;
+}
+
+.stat-card {
+    padding: 24px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #69778d;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 32px;
+    margin: 15px 0 7px;
+}
+
+.stat-card small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.panel {
+    padding: 24px;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.panel-heading h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.tag {
+    background: #e5f8f4;
+    color: #0b8b7e;
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.placeholder {
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #9ba7b7;
+    text-align: center;
+}
+
+.placeholder-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.placeholder strong {
+    font-size: 13px;
+    color: #738198;
+}
+
+.placeholder p {
+    font-size: 12px;
+}
+
+.system-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 23px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.system-row:last-child {
+    border-bottom: 0;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.table-panel {
+    padding-bottom: 12px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    text-align: left;
+    background: #f8fafd;
+    color: #7a879b;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 14px;
+}
+
+td {
+    padding: 17px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 35px;
+}
+
+.access-granted,
+.access-denied {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.access-granted {
+    background: #e5f8f4;
+    color: #0b8b7e;
+}
+
+.access-denied {
+    background: #fef0f0;
+    color: #d64545;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    margin-top: 20px;
+}
+
+.access-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #334155;
+    font: inherit;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-button {
+    min-height: 44px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.filter-button:hover {
+    background: #0d9488;
+}
+
+.filter-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.filter-clear {
+    padding: 12px 16px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+    font-size: 13px;
+}
+
+.pagination a {
+    color: #0d9488;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#userMessage {
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.deactivate-button {
+    padding: 8px 14px;
+    border: 1px solid #fecaca;
+    border-radius: 7px;
+    background: #fef2f2;
+    color: #dc2626;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.deactivate-button:hover {
+    background: #fee2e2;
+}
+
+.deactivate-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.activate-button {
+    padding: 8px 14px;
+    border: 1px solid #99f6e4;
+    border-radius: 7px;
+    background: #f0fdfa;
+    color: #0f766e;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.activate-button:hover {
+    background: #ccfbf1;
+}
+
+.activate-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.rfid-input-group {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+}
+
+.rfid-input-group input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.rfid-read-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid #99f6e4;
+    border-radius: 8px;
+    background: #f0fdfa;
+    color: #0f766e;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.rfid-read-button:hover {
+    background: #ccfbf1;
+}
+
+.rfid-read-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#rfidStatus {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+#rfidStatus:empty {
+    display: none;
+}
+
+#userForm {
+    align-items: flex-end;
+}
+
+#userForm .filter-field {
+    min-width: 180px;
+}
+
+#userForm .filter-field:has(#rfidUid) {
+    flex: 1.5;
+    min-width: 280px;
+}
+
+#userForm .filter-actions {
+    align-self: flex-end;
+}
+
+@media (max-width: 1100px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    #userForm .filter-field {
+        flex: 1 1 40%;
+    }
+
+    #userForm .filter-field:has(#rfidUid) {
+        flex: 1 1 40%;
+        min-width: 240px;
+    }
+
+    #userForm .filter-actions {
+        flex: 1 1 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 15px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px 14px;
+    }
+
+    .brand {
+        padding: 5px 0 15px;
+    }
+
+    .sidebar nav {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .nav-link {
+        white-space: nowrap;
+    }
+
+    .menu-label,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .panel-heading {
+        flex-wrap: wrap;
+    }
+
+    .access-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-field,
+    #userForm .filter-field,
+    #userForm .filter-field:has(#rfidUid) {
+        width: 100%;
+        min-width: 0;
+        flex: auto;
+    }
+
+    .filter-actions,
+    #userForm .filter-actions {
+        width: 100%;
+        align-self: stretch;
+    }
+
+    .filter-button {
+        width: 100%;
+    }
+
+    .rfid-input-group {
+        flex-direction: column;
+    }
+
+    .rfid-read-button {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}

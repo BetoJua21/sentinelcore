@@ -1,6 +1,7 @@
 package com.robertojuarez.sentinelcore.controller;
 
 import com.robertojuarez.sentinelcore.controller.AccessFacade;
+import com.robertojuarez.sentinelcore.dto.AccessResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,13 @@ public class AccessController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<String> verifyAccess(@RequestParam String rfid)
+    public ResponseEntity<AccessResponse> verifyAccess(@RequestParam String rfid)
     {
-        String result = accessFacade.evaluatedAccess(rfid);
+        if(rfid.isBlank())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        AccessResponse result = accessFacade.evaluatedAccess(rfid);
 
         return ResponseEntity.ok(result);
     }

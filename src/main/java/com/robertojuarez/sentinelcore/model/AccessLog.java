@@ -2,7 +2,8 @@ package com.robertojuarez.sentinelcore.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 
 @Document(collection = "access_logs")
 public class AccessLog {
@@ -10,13 +11,13 @@ public class AccessLog {
     @Id
     private String id;
     private String rfidUid;
-    private LocalDateTime timestamp;
+    private Instant timestamp;
     private boolean granted;
     private String message;
 
     public AccessLog(){}
 
-    public AccessLog(String rfidUid, LocalDateTime timestamp, boolean granted, String message) {
+    public AccessLog(String rfidUid, Instant timestamp, boolean granted, String message) {
         this.rfidUid = rfidUid;
         this.timestamp = timestamp;
         this.granted = granted;
@@ -39,11 +40,11 @@ public class AccessLog {
         this.rfidUid = rfidUid;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 

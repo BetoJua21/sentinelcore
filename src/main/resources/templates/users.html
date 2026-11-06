@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | SentinelCore</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="brand-icon">◆</span> SentinelCore
+        </div>
+
+        <div class="menu-label">MENÚ PRINCIPAL</div>
+
+        <nav>
+            <a class="nav-link" th:href="@{/dashboard}">
+                Dashboard
+            </a>
+
+            <a class="nav-link" th:href="@{/accesses}">
+                Accesos
+            </a>
+
+            <a class="nav-link active" th:href="@{/users}">
+                Usuarios
+            </a>
+
+            <a class="nav-link" th:href="@{/reports}">
+                Reports
+            </a>
+
+            <a class="nav-link" href="#">
+                Configuración
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="avatar">SC</div>
+
+            <div>
+                <strong>SentinelCore</strong>
+                <small>Panel de administración</small>
+            </div>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <span class="eyebrow">GESTIÓN DEL SISTEMA</span>
+
+                <h1>Administración de usuarios</h1>
+
+                <p class="subtitle">
+                    Registra usuarios y administra sus tarjetas RFID.
+                </p>
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>
+                Gestión de usuarios
+            </div>
+
+        </header>
+
+        <section class="panel">
+
+            <div class="panel-heading">
+
+                <div>
+                    <h2>Registrar nuevo usuario</h2>
+
+                    <p>
+                        Completa los datos o captura una tarjeta RFID.
+                    </p>
+                </div>
+
+                <span class="tag">Nuevo registro</span>
+
+            </div>
+
+            <form id="userForm" class="access-filters">
+
+                <div class="filter-field">
+
+                    <label for="name">
+                        Nombre completo
+                    </label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Nombre del usuario"
+                            required
+                    >
+
+                </div>
+
+                <div class="filter-field">
+
+                    <label for="rfidUid">
+                        UID de tarjeta RFID
+                    </label>
+
+                    <div class="rfid-input-group">
+
+                        <input
+                                type="text"
+                                id="rfidUid"
+                                name="rfidUid"
+                                placeholder="Ej. A1:B2:C3:D4"
+                                required
+                        >
+
+                        <button
+                                type="button"
+                                id="readRfidButton"
+                                class="rfid-read-button"
+                                title="Capturar UID de una tarjeta RFID"
+                        >
+                            Leer RFID
+                        </button>
+
+                    </div>
+
+                    <p
+                            id="rfidStatus"
+                            class="muted"
+                            role="status"
+                            aria-live="polite"
+                    ></p>
+
+                </div>
+
+                <div class="filter-field">
+
+                    <label for="role">Rol</label>
+
+                    <select
+                            id="role"
+                            name="role"
+                            required
+                    >
+                        <option value="">
+                            Seleccionar rol
+                        </option>
+
+                        <option value="STUDENT">
+                            Estudiante
+                        </option>
+
+                        <option value="TEACHER">
+                            Profesor
+                        </option>
+
+                        <option value="STAFF">
+                            Personal
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="filter-actions">
+
+                    <button
+                            type="submit"
+                            class="filter-button"
+                    >
+                        Registrar usuario
+                    </button>
+
+                </div>
+
+            </form>
+
+            <p
+                    id="userMessage"
+                    role="status"
+                    aria-live="polite"
+            ></p>
+
+        </section>
+
+        <section
+                class="panel table-panel"
+                style="margin-top: 22px;"
+        >
+
+            <div class="panel-heading">
+
+                <div>
+                    <h2>Usuarios registrados</h2>
+
+                    <p>
+                        Consulta, activa o desactiva usuarios del sistema.
+                    </p>
+                </div>
+
+                <span class="tag">
+                    MongoDB Atlas
+                </span>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>RFID</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="user : ${users}">
+
+                        <td th:text="${user.name}">
+                            Nombre
+                        </td>
+
+                        <td th:text="${user.rfidUid}">
+                            UID
+                        </td>
+
+                        <td th:text="${user.role}">
+                            Rol
+                        </td>
+
+                        <td>
+
+                                <span
+                                        class="access-granted"
+                                        th:if="${user.active}"
+                                >
+                                    Activo
+                                </span>
+
+                            <span
+                                    class="access-denied"
+                                    th:unless="${user.active}"
+                            >
+                                    Inactivo
+                                </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                    type="button"
+                                    class="deactivate-button"
+                                    th:if="${user.active}"
+                                    th:attr="data-user-id=${user.id}"
+                            >
+                                Desactivar
+                            </button>
+
+                            <button
+                                    type="button"
+                                    class="activate-button"
+                                    th:unless="${user.active}"
+                                    th:attr="data-user-id=${user.id}"
+                            >
+                                Activar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(users)}">
+
+                        <td
+                                colspan="5"
+                                class="empty"
+                        >
+                            No hay usuarios registrados.
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script th:src="@{/js/users.js}"></script>
+<script th:src="@{/js/rfid-registration.js}"></script>
+
+</body>
+</html>

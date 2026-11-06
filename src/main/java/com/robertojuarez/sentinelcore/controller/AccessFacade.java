@@ -5,8 +5,9 @@ import com.robertojuarez.sentinelcore.model.User;
 import com.robertojuarez.sentinelcore.repository.AccessLogRepository;
 import com.robertojuarez.sentinelcore.service.UserService;
 import org.springframework.stereotype.Component;
+import com.robertojuarez.sentinelcore.dto.AccessResponse;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 
 @Component
@@ -21,32 +22,33 @@ public class AccessFacade {
         this.accessLogRepository = accessLogRepository;
     }
 
-    public String evaluatedAccess(String rfidUid)
+    public AccessResponse evaluatedAccess(String rfidUid)
     {
         Optional<User> optionalUser = userService.findByRfid(rfidUid);
-        boolean granted = optionalUser.isPresent();
+        boolean granted = optionalUser.map(User::isActive).orElse(false);
         String message;
 
-        if(granted)
-        {
-            User user = optionalUser.get();
-
-            message =  "¡Acceso concedido! Bienvenido " + user.getName();
-        }
-        else {
+        if (optionalUser.isEmpty()) {
             message = "Acceso denegado: Tarjeta no reconocida.";
+        } else if (!optionalUser.get().isActive()) {
+            message = "Acceso denegado: Usuario inactivo.";
+        } else {
+            User user = optionalUser.get();
+            message = "¡Acceso concedido! Bienvenido " + user.getName();
         }
+
+        Instant timestamp = Instant.now();
 
         AccessLog accessLog = new AccessLog(
                 rfidUid,
-                LocalDateTime.now(),
+                timestamp,
                 granted,
                 message
         );
 
         accessLogRepository.save(accessLog);
 
-        return message;
+        return new AccessResponse(granted,message);
 
     }
 }

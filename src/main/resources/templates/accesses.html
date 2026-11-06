@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SentinelCore | Accesos</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">◆</span>
+            <span>Sentinel<span class="accent">Core</span></span>
+        </div>
+
+        <div class="menu-label">GENERAL</div>
+
+        <nav>
+            <a class="nav-link" th:href="@{/dashboard}">
+                ▦ &nbsp; Dashboard
+            </a>
+
+            <a class="nav-link active" th:href="@{/accesses}">
+                ◉ &nbsp; Accesos
+            </a>
+
+            <a class="nav-link" th:href="@{/users}">
+                ♙ &nbsp; Usuarios
+            </a>
+
+            <a class="nav-link" th:href="@{/reports}">
+                ▤ &nbsp; Reportes
+            </a>
+        </nav>
+
+        <div class="menu-label">SISTEMA</div>
+
+        <nav>
+            <a class="nav-link" href="#">
+                ⚙ &nbsp; Configuración
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="avatar">A</div>
+            <div>
+                <strong>Administrador</strong>
+                <small>Panel de control</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">PANEL DE ADMINISTRACIÓN</p>
+                <h1>Historial de accesos</h1>
+                <p class="subtitle">
+                    Consulta y filtrado de movimientos RFID
+                </p>
+            </div>
+        </header>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Filtros de búsqueda</h2>
+                    <p>Selecciona los criterios que deseas consultar</p>
+                </div>
+            </div>
+
+            <form method="get"
+                  th:action="@{/accesses}"
+                  class="access-filters">
+
+                <div class="filter-field">
+                    <label for="date">Fecha</label>
+                    <input type="date"
+                           id="date"
+                           name="date"
+                           th:value="${date}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="rfidUid">RFID</label>
+                    <input type="text"
+                           id="rfidUid"
+                           name="rfidUid"
+                           placeholder="Buscar tarjeta"
+                           th:value="${rfidUid}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="granted">Resultado</label>
+                    <select id="granted" name="granted">
+                        <option value="">Todos</option>
+
+                        <option value="true"
+                                th:selected="${granted != null and granted == true}">
+                            Concedido
+                        </option>
+
+                        <option value="false"
+                                th:selected="${granted != null and granted == false}">
+                            Denegado
+                        </option>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="filter-button">
+                        Buscar
+                    </button>
+
+                    <a th:href="@{/accesses}" class="filter-clear">
+                        Limpiar
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel table-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Registros encontrados</h2>
+                    <p>
+                        <span th:text="${logs.totalElements}">0</span>
+                        movimientos registrados
+                    </p>
+                </div>
+
+                <span class="tag">Historial RFID</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>RFID</th>
+                        <th>Fecha y hora (UTC)</th>
+                        <th>Estado</th>
+                        <th>Mensaje</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="log : ${logs.content}">
+                        <td th:text="${log.rfidUid}"></td>
+
+                        <td th:text="${log.timestamp}"></td>
+
+                        <td>
+                                <span
+                                        th:class="${log.granted} ? 'access-granted' : 'access-denied'"
+                                        th:text="${log.granted} ? 'Concedido' : 'Denegado'">
+                                </span>
+                        </td>
+
+                        <td th:text="${log.message}"></td>
+                    </tr>
+
+                    <tr th:if="${logs.empty}">
+                        <td colspan="4" class="empty">
+                            No se encontraron registros con estos filtros.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination"
+                 th:if="${logs.totalPages > 1}">
+
+                <a th:if="${logs.hasPrevious()}"
+                   th:href="@{/accesses(
+                       date=${date},
+                       rfidUid=${rfidUid},
+                       granted=${granted},
+                       page=${logs.number - 1}
+                   )}">
+                    Anterior
+                </a>
+
+                <span th:text="|Página ${logs.number + 1} de ${logs.totalPages}|">
+                    Página 1 de 1
+                </span>
+
+                <a th:if="${logs.hasNext()}"
+                   th:href="@{/accesses(
+                       date=${date},
+                       rfidUid=${rfidUid},
+                       granted=${granted},
+                       page=${logs.number + 1}
+                   )}">
+                    Siguiente
+                </a>
+            </div>
+        </section>
+    </main>
+</div>
+
+</body>
+</html>

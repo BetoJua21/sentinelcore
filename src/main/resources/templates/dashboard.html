@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SentinelCore | Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">◆</span>
+            <span>Sentinel<span class="accent">Core</span></span>
+        </div>
+
+        <div class="menu-label">GENERAL</div>
+
+        <nav>
+            <a class="nav-link active" th:href="@{/dashboard}">
+                ▦ &nbsp; Dashboard
+            </a>
+
+            <a class="nav-link" th:href="@{/accesses}">
+                ◉ &nbsp; Accesos
+            </a>
+
+            <a class="nav-link" th:href="@{/users}">
+                ♙ &nbsp; Usuarios
+            </a>
+
+            <a class="nav-link" th:href="@{/reports}">
+                ▤ &nbsp; Reportes
+            </a>
+        </nav>
+
+        <div class="menu-label">SISTEMA</div>
+
+        <nav>
+            <a class="nav-link" href="#">
+                ⚙ &nbsp; Configuración
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="avatar">A</div>
+            <div>
+                <strong>Administrador</strong>
+                <small>Panel de control</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">PANEL DE ADMINISTRACIÓN</p>
+                <h1>Dashboard</h1>
+                <p class="subtitle">
+                    Monitoreo general del sistema de acceso
+                </p>
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>
+                Panel disponible
+            </div>
+        </header>
+
+        <section class="stats">
+            <article class="stat-card">
+                <span class="stat-label">Usuarios registrados</span>
+                <strong th:text="${totalUsers}">0</strong>
+                <small>Total de usuarios en MongoDB</small>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Accesos concedidos</span>
+                <strong th:text="${grantedAccess}">0</strong>
+                <small>Historial de accesos autorizados</small>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Accesos denegados</span>
+                <strong th:text="${deniedAccess}">0</strong>
+                <small>Historial de accesos rechazados</small>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Usuarios activos</span>
+                <strong th:text="${activeUsers}">0</strong>
+                <small>Usuarios habilitados actualmente</small>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <article class="panel activity">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Actividad de accesos</h2>
+                        <p>
+                            Accesos concedidos y denegados
+                            en los últimos 7 días
+                        </p>
+                    </div>
+
+                    <span class="tag">Últimos 7 días</span>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="accessChart"></canvas>
+                </div>
+
+                <div id="accessChartData"
+                     th:attr="data-labels=${chartLabels},
+                              data-dates=${chartDates},
+                              data-granted=${grantedCounts},
+                              data-denied=${deniedCounts}"
+                     hidden>
+                </div>
+            </article>
+
+            <article class="panel summary">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Estado del sistema</h2>
+                        <p>Componentes principales</p>
+                    </div>
+                </div>
+
+                <div class="system-row">
+                    <span>Backend API</span>
+                    <span class="tag">Dashboard cargado</span>
+                </div>
+
+                <div class="system-row">
+                    <span>Lectores RFID</span>
+                    <span class="muted">Sin monitoreo</span>
+                </div>
+
+                <div class="system-row">
+                    <span>Predicción IA</span>
+                    <span class="muted">Pendiente</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="panel table-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Accesos recientes</h2>
+                    <p>Últimos movimientos del sistema</p>
+                </div>
+
+                <span class="tag">Últimos 10 registros</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>RFID</th>
+                        <th>Fecha y hora (UTC)</th>
+                        <th>Estado</th>
+                        <th>Mensaje</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="log : ${recentLogs}">
+                        <td th:text="${log.rfidUid}"></td>
+
+                        <td th:text="${log.timestamp}"></td>
+
+                        <td>
+                                <span
+                                        th:class="${log.granted} ? 'access-granted' : 'access-denied'"
+                                        th:text="${log.granted} ? 'Concedido' : 'Denegado'">
+                                </span>
+                        </td>
+
+                        <td th:text="${log.message}"></td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(recentLogs)}">
+                        <td colspan="4" class="empty">
+                            Todavía no existen registros de acceso.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+
+</body>
+</html>
